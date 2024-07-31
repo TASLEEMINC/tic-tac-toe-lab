@@ -1,99 +1,123 @@
 /*-------------------------------- Constants --------------------------------*/
+
+/*---------------------------- Variables (state) ----------------------------*/
+let board;
+let turn;
+let winner;
+let tie;
+/*------------------------ Cached Element References ------------------------*/
+const squareEls = document.querySelectorAll('.sqr');
+const messageEl = document.querySelector('#message')
+const resetBtnEl = document.querySelector('#reset')
+
+/*-------------------------------- Functions --------------------------------*/
+const init = () => {
+
+    board = ['', '', '', '', '', '', '', '', ''];    
+    turn = 'X'; // <-- this will represent player X
+    winner = false; //means that there is no winner yet
+    tie = false;
+    render();
+}
+
+function render() {
+    updateBoard();
+    updateMessage();
+};
+
+const updateBoard = () => {
+    board.forEach((cell, idx) => {
+        if (cell === 'X') {
+            squareEls[idx].textContent = 'X';
+            // squareEls[idx].style.backgroundColor = 'green'
+        } else if (cell === 'O') {
+          squareEls[idx].textContent = 'O';
+        //   squareEls[idx].style.backgroundColor = 'orange'
+        } else {
+          squareEls[idx].textContent = '';
+        //   squareEls[idx].style.backgroundColor = 'yellow'
+        }
+    });
+};
+
+const updateMessage = () => {
+    if (winner === false && tie === false) {
+        messageEl.textContent = 'Start the game by clicking on the cell'
+    } else if (winner === false && tie === true) {
+        messageEl.textContent = 'Tie! No winners!'
+    } else {
+        messageEl.textContent = 'Congratulations! You won!'
+    }
+}
+
+const handleClick = (event) => {
+    const squareIndex = event.target.id
+    // console.log(squareIndex)
+    if (board[squareIndex] === 'X' || board[squareIndex] === 'O' || winner === true) {                
+    return;
+    }
+    if (event.target.innerText === '') {         
+        // console.log('ok')
+        board[squareIndex] === 'X'        
+        }
+    placePiece(squareIndex);
+    checkForWinner()
+    checkForTie()
+    switchPlayerTurn()
+    render()
+}
+
+squareEls.forEach((cell) => cell.addEventListener('click', handleClick))
+
+const placePiece = (index) => {
+    board[index] = turn;
+    console.log(board)
+}
+
 const winningCombos = [
     [0, 1, 2],
-    [3, 4, 5],
-    // and so on    
+    [3, 4, 5],        
     [6, 7, 8],
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6]
-  ]  
+  ]
+
+const checkForWinner = () => {
+    winningCombos.forEach(combo => {
+        if (board[combo[0]] !== '' && 
+            board[combo[0]] === board[combo[1]] && 
+            board[combo[1]] === board[combo[2]]) {
+                winner = true
+            }
+    })
+}
+
+const checkForTie = () => {
+    if (winner === true) {
+        return;
+    } else if (isEmpty === true) {
+        tie = false;
+    } else tie = true;
+}
+
+const switchPlayerTurn = () => {
+    console.log(turn, winner)
+    if (winner === true) {
+        return;
+    } else if (winner === false && turn === 'X') {
+        turn = 'O'
+    } else if (winner === false && turn === 'O') {
+        turn = 'X'
+    }
+}
+
+init()
+// /*----------------------------- Event Listeners -----------------------------*/
+resetBtnEl.addEventListener('click', init)
   
-/*---------------------------- Variables (state) ----------------------------*/
-// let board = ['', '', '', '', '', '', '', '', ''];
-let board = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'];
-
-let turn = 'X'; // player X
-let winner = false; //the game is still in progress
-let tie = false; //the game is still in progress
-
-
-/*------------------------ Cached Element References ------------------------*/
-const squareEls = document.querySelectorAll('.sqr'); // stored in Array
-// console.log(squareEls)
-const messageEl = document.querySelector('#message')
-// console.dir(messageEl.innerText)
-
-
-
-/*-------------------------------- Functions --------------------------------*/
-function init() {
-    console.log('tempMessage');
-}
-
-function render(statusMsg) {
-    messageEl.innerText = statusMsg
-    updateBoard()
-    updateMessage()
-}
-
-function updateBoard () {
-    // squareEls.forEach( (squareEl) => squareEl = board ) <--wrong
-    for (let i=0; i<board.length; i++) {
-        squareEls[i].innerText = board[i]
-    }
-}
-updateBoard() // it can be commented out
-
-function updateMessage() {
-    if (winner === false && tie === false) {
-        render('X goes first!');
-    } else if (winner === false && tie === true) {
-        render('Tie! No winner!')
-    } else {
-        render('Congratulations! You[the player] won!')
-    }
-}
-
-/*----------------------------- Event Listeners -----------------------------*/
-
-function handleClick (event) {
-    // console.dir(event.target.id)
-    const squareIndex = event.target.id
-    // if(event.target.innerText === 'X' || event.target.innerText === 'O') { }
-}
-squareEls.forEach( (squareEl) => squareEl.addEventListener('click', handleClick ))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//1) Define the required variables used to track the state of the game.
-
-//2) Store cached element references.
-
-//3) Upon loading, the game state should be initialized, and a function should 
-//   be called to render this game state.
-
-//4) The state of the game should be rendered to the user.
-
-//5) Define the required constants.
-
-//6) Handle a player clicking a square with a `handleClick` function.
-
-//7) Create Reset functionality.
+  const isEmpty = board.some((cell) => {
+    cell.value = '';
+  });
