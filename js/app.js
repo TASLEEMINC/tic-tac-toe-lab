@@ -29,13 +29,13 @@ const updateBoard = () => {
     board.forEach((cell, idx) => {
         if (cell === 'X') {
             squareEls[idx].textContent = 'X';
-            // squareEls[idx].style.backgroundColor = 'green'
+            squareEls[idx].style.backgroundColor = 'green'
         } else if (cell === 'O') {
           squareEls[idx].textContent = 'O';
-        //   squareEls[idx].style.backgroundColor = 'orange'
+          squareEls[idx].style.backgroundColor = 'orange'
         } else {
           squareEls[idx].textContent = '';
-        //   squareEls[idx].style.backgroundColor = 'yellow'
+          squareEls[idx].style.backgroundColor = 'yellow'
         }
     });
 };
@@ -92,7 +92,7 @@ const checkForWinner = () => {
         if (board[combo[0]] !== '' && 
             board[combo[0]] === board[combo[1]] && 
             board[combo[1]] === board[combo[2]]) 
-            
+
             {
                 winner = true
             }
