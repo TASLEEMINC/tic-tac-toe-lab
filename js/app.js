@@ -121,8 +121,3 @@ const switchPlayerTurn = () => {
 init()
 // /*----------------------------- Event Listeners -----------------------------*/
 resetBtnEl.addEventListener('click', init)
-  
-  const isEmpty = board.some((cell) => {
-    cell.value = '';
-  });
-  console.log(isEmpty)
