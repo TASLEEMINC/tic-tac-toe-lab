@@ -60,9 +60,11 @@ const handleClick = (event) => {
         // console.log('ok')
         board[squareIndex] === 'X'        
         }
+        console.log(tie)
     placePiece(squareIndex);
     checkForWinner()
     checkForTie()
+    console.log(tie)
     switchPlayerTurn()
     render()
 }
@@ -89,7 +91,9 @@ const checkForWinner = () => {
     winningCombos.forEach(combo => {
         if (board[combo[0]] !== '' && 
             board[combo[0]] === board[combo[1]] && 
-            board[combo[1]] === board[combo[2]]) {
+            board[combo[1]] === board[combo[2]]) 
+            
+            {
                 winner = true
             }
     })
@@ -98,7 +102,7 @@ const checkForWinner = () => {
 const checkForTie = () => {
     if (winner === true) {
         return;
-    } else if (isEmpty === true) {
+    } else if (board.includes('') === true) {
         tie = false;
     } else tie = true;
 }
@@ -121,3 +125,4 @@ resetBtnEl.addEventListener('click', init)
   const isEmpty = board.some((cell) => {
     cell.value = '';
   });
+  console.log(isEmpty)
